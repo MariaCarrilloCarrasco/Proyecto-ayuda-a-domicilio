@@ -1,0 +1,58 @@
+:root {
+  --bg-primary: #FAF7F0;      /* Warm soft cream */
+  --bg-secondary: #F2EDE4;    /* Slightly darker beige */
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --border-card: rgba(44, 14, 55, 0.12);
+  --text-main: #2C0E37;       /* Deep plum/purple (high contrast) */
+  --text-sub: #544458;        /* Muted deep purple */
+  --accent-purple: #7B2CBF;
+  --accent-orange: #E85D04;
+  --accent-green: #1B4D3E;    /* Dark forest green for positive/success */
+  --accent-green-light: #2A9D8F;
+  --accent-whatsapp: #25D366;
+  
+  --font-title: 'Space Grotesk', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --transition: all 0.25s ease-in-out;
+  --card-shadow: 0 8px 24px rgba(44, 14, 55, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent-purple);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-orange);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
