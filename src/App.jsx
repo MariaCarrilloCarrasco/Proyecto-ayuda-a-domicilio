@@ -393,13 +393,13 @@ export default function App() {
           <div className="traditional-contacts">
             <h4>Otros medios de contacto:</h4>
             <div className="traditional-grid">
-              <a href="mailto:mariacuario12@hotmail.es" className="traditional-card">
+              <a href="mailto:mariacuario12@hotmail.es?subject=Consulta%20sobre%20Apoyo%20Digital%20y%20Clases%20a%20Domicilio&body=Hola%20Mar%C3%ADa%2C%20me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20o%20solicitar%20tus%20servicios%20de%20apoyo%20digital%20a%20domicilio%20para%20personas%20mayores.%20Gracias." className="traditional-card">
                 📧 <strong>Hotmail:</strong> mariacuario12@hotmail.es
               </a>
-              <a href="mailto:mariacarrillocarrasco12@gmail.com" className="traditional-card">
+              <a href="mailto:mariacarrillocarrasco12@gmail.com?subject=Consulta%20sobre%20Apoyo%20Digital%20y%20Clases%20a%20Domicilio&body=Hola%20Mar%C3%ADa%2C%20me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20o%20solicitar%20tus%20servicios%20de%20apoyo%20digital%20a%20domicilio%20para%20personas%20mayores.%20Gracias." className="traditional-card">
                 📧 <strong>Gmail:</strong> mariacarrillocarrasco12@gmail.com
               </a>
-              <a href="mailto:mariacarrillocarrasco12@outlook.com" className="traditional-card">
+              <a href="mailto:mariacarrillocarrasco12@outlook.com?subject=Consulta%20sobre%20Apoyo%20Digital%20y%20Clases%20a%20Domicilio&body=Hola%20Mar%C3%ADa%2C%20me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20o%20solicitar%20tus%20servicios%20de%20apoyo%20digital%20a%20domicilio%20para%20personas%20mayores.%20Gracias." className="traditional-card">
                 📧 <strong>Outlook:</strong> mariacarrillocarrasco12@outlook.com
               </a>
             </div>
