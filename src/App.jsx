@@ -8,6 +8,10 @@ export default function App() {
   const [highContrast, setHighContrast] = useState(false);
   // Image Viewer modal state
   const [zoomedImage, setZoomedImage] = useState(null);
+  // Assistant states
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [isSignPlaying, setIsSignPlaying] = useState(false);
 
   const workshops = [
     {
@@ -95,6 +99,24 @@ export default function App() {
   const handleWhatsApp = () => {
     const text = encodeURIComponent('Hola María, vi tu web y me gustaría pedir ayuda o clases para aprender a usar el móvil/hacer trámites por internet.');
     window.open(`https://wa.me/34657028674?text=${text}`, '_blank');
+  };
+
+  const handleToggleAudio = () => {
+    if (isAudioPlaying) {
+      window.speechSynthesis.cancel();
+      setIsAudioPlaying(false);
+    } else {
+      const textToSpeak = "Hola, te doy la bienvenida. En esta página, María Carrillo, Educadora Social, te ofrece apoyo y clases a domicilio en Alcalá de Henares para aprender a usar el móvil, WhatsApp, pedir citas médicas y realizar tus gestiones de internet sin prisas y con total paciencia. Si deseas contactar con ella, pulsa el botón verde para enviar un WhatsApp o el botón naranja para llamarla directamente por teléfono. ¡Estaremos encantados de ayudarte!";
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      utterance.lang = 'es-ES';
+      utterance.rate = 0.85; // Un poco más lento para mejor claridad
+      utterance.onend = () => setIsAudioPlaying(false);
+      utterance.onerror = () => setIsAudioPlaying(false);
+      
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+      setIsAudioPlaying(true);
+    }
   };
 
   return (
@@ -425,6 +447,87 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* FLOATING ACCESSIBLE ASSISTANT */}
+      <div className={`floating-assistant ${isAssistantOpen ? 'expanded' : 'collapsed'}`}>
+        {isAssistantOpen ? (
+          <div className="assistant-card animate-slide-in">
+            <div className="assistant-header">
+              <span>🧏 Guía Accesible (Voz y Señas)</span>
+              <button className="btn-close-assistant" onClick={() => {
+                setIsAssistantOpen(false);
+                if (isAudioPlaying) {
+                  window.speechSynthesis.cancel();
+                  setIsAudioPlaying(false);
+                }
+                setIsSignPlaying(false);
+              }}>✕</button>
+            </div>
+            
+            <div className="assistant-body">
+              {/* Sign Language Video Simulation */}
+              <div className="sign-player-container">
+                <div className={`sign-video-screen ${isSignPlaying ? 'playing' : 'paused'}`}>
+                  {/* SVG Interpreter character */}
+                  <svg viewBox="0 0 100 100" className="interpreter-svg">
+                    {/* Background */}
+                    <rect width="100" height="100" fill="#2C0E37" rx="10" />
+                    {/* Interpreter Body */}
+                    <path d="M20 95 C 20 60, 80 60, 80 95 Z" fill="#E85D04" />
+                    {/* Head */}
+                    <circle cx="50" cy="40" r="18" fill="#FFD1B3" />
+                    {/* Hair */}
+                    <path d="M30 40 C 30 20, 70 20, 70 40 C 65 30, 35 30, 30 40 Z" fill="#4B125C" />
+                    {/* Left Arm / Hand */}
+                    <path d="M 25 75 C 30 65, 45 65, 42 55" stroke="#FFD1B3" strokeWidth="6" strokeLinecap="round" fill="none" className="left-arm" />
+                    {/* Right Arm / Hand */}
+                    <path d="M 75 75 C 70 65, 55 65, 58 55" stroke="#FFD1B3" strokeWidth="6" strokeLinecap="round" fill="none" className="right-arm" />
+                    {/* Eye Details */}
+                    <circle cx="44" cy="38" r="2" fill="#2C0E37" />
+                    <circle cx="56" cy="38" r="2" fill="#2C0E37" />
+                    {/* Smile */}
+                    <path d="M 45 46 Q 50 51 55 46" stroke="#2C0E37" strokeWidth="2" fill="none" strokeLinecap="round" />
+                  </svg>
+                  {!isSignPlaying && (
+                    <div className="play-overlay" onClick={() => setIsSignPlaying(true)}>
+                      <span className="play-icon-sig">▶️ Ver Lengua de Signos</span>
+                    </div>
+                  )}
+                  {isSignPlaying && (
+                    <span className="sign-language-badge">Intérprete Virtual</span>
+                  )}
+                </div>
+                <div className="player-controls">
+                  <button className="btn-player" onClick={() => setIsSignPlaying(!isSignPlaying)}>
+                    {isSignPlaying ? '⏸️ Pausar Intérprete' : '▶️ Ver en Lengua de Signos'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Audio explanation controls */}
+              <div className="audio-controls-block">
+                <h5>🔊 Escuchar esta página</h5>
+                <button 
+                  className={`btn-audio-speak ${isAudioPlaying ? 'speaking' : ''}`}
+                  onClick={handleToggleAudio}
+                >
+                  {isAudioPlaying ? '⏹️ Parar Audio' : '🔊 Escuchar por Voz'}
+                </button>
+                <p className="assistant-tip">Haz clic para escuchar una explicación hablada.</p>
+              </div>
+
+              <div className="assistant-promo">
+                <p>María te ayuda con el móvil y los trámites de forma fácil y con paciencia. ¡Anímate a contactar!</p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <button className="btn-assistant-collapsed" onClick={() => setIsAssistantOpen(true)}>
+            <span className="btn-assistant-icons">🧏🔊</span>
+            <span className="btn-assistant-text">¿Necesitas ayuda?</span>
+          </button>
+        )}
+      </div>
 
     </div>
   );
