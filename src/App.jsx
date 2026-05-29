@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 export default function App() {
@@ -12,6 +12,18 @@ export default function App() {
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isSignPlaying, setIsSignPlaying] = useState(false);
+
+  const signVideoRef = useRef(null);
+
+  useEffect(() => {
+    if (signVideoRef.current) {
+      if (isSignPlaying) {
+        signVideoRef.current.play().catch(err => console.log("Sign video play error:", err));
+      } else {
+        signVideoRef.current.pause();
+      }
+    }
+  }, [isSignPlaying]);
 
   const workshops = [
     {
@@ -465,36 +477,26 @@ export default function App() {
             </div>
             
             <div className="assistant-body">
-              {/* Sign Language Video Simulation */}
+              {/* Sign Language Video */}
               <div className="sign-player-container">
                 <div className={`sign-video-screen ${isSignPlaying ? 'playing' : 'paused'}`}>
-                  {/* SVG Interpreter character */}
-                  <svg viewBox="0 0 100 100" className="interpreter-svg">
-                    {/* Background */}
-                    <rect width="100" height="100" fill="#2C0E37" rx="10" />
-                    {/* Interpreter Body */}
-                    <path d="M20 95 C 20 60, 80 60, 80 95 Z" fill="#E85D04" />
-                    {/* Head */}
-                    <circle cx="50" cy="40" r="18" fill="#FFD1B3" />
-                    {/* Hair */}
-                    <path d="M30 40 C 30 20, 70 20, 70 40 C 65 30, 35 30, 30 40 Z" fill="#4B125C" />
-                    {/* Left Arm / Hand */}
-                    <path d="M 25 75 C 30 65, 45 65, 42 55" stroke="#FFD1B3" strokeWidth="6" strokeLinecap="round" fill="none" className="left-arm" />
-                    {/* Right Arm / Hand */}
-                    <path d="M 75 75 C 70 65, 55 65, 58 55" stroke="#FFD1B3" strokeWidth="6" strokeLinecap="round" fill="none" className="right-arm" />
-                    {/* Eye Details */}
-                    <circle cx="44" cy="38" r="2" fill="#2C0E37" />
-                    <circle cx="56" cy="38" r="2" fill="#2C0E37" />
-                    {/* Smile */}
-                    <path d="M 45 46 Q 50 51 55 46" stroke="#2C0E37" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  </svg>
+                  <video
+                    ref={signVideoRef}
+                    className="sign-video-element"
+                    src="/sign-language.mp4"
+                    loop
+                    muted
+                    playsInline
+                    onClick={() => setIsSignPlaying(!isSignPlaying)}
+                    style={{ cursor: 'pointer' }}
+                  />
                   {!isSignPlaying && (
                     <div className="play-overlay" onClick={() => setIsSignPlaying(true)}>
                       <span className="play-icon-sig">▶️ Ver Lengua de Signos</span>
                     </div>
                   )}
                   {isSignPlaying && (
-                    <span className="sign-language-badge">Intérprete Virtual</span>
+                    <span className="sign-language-badge">Intérprete</span>
                   )}
                 </div>
                 <div className="player-controls">
