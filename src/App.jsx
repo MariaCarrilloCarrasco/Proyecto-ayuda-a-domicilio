@@ -29,14 +29,18 @@ export default function App() {
     let captionInterval;
     if (isSignPlaying) {
       const captions = [
-        "¡Hola! Te doy la bienvenida a mi web.",
-        "Soy María Carrillo, Educadora Social.",
-        "Ofrezco clases a domicilio de móvil e internet.",
-        "Aprenderás a usar WhatsApp y pedir citas médicas.",
-        "También te ayudo con gestiones y trámites oficiales.",
-        "Si quieres clases, ¡contacta conmigo!"
+        "¡Hola! Te doy la bienvenida a mi página de Apoyo Digital y Clases a Domicilio.",
+        "Soy María Carrillo, Educadora Social, y te ofrezco clases con total paciencia.",
+        "En esta página verás cómo puedo ayudarte a usar tu teléfono móvil, tablet u ordenador.",
+        "Te enseño a usar WhatsApp, hacer videollamadas y comunicarte con tus hijos y nietos.",
+        "Aprenderás a pedir citas médicas de cabecera y recetas electrónicas por internet.",
+        "Realizaremos gestiones seguras como banco por internet, Seguridad Social o Ayuntamiento.",
+        "Te enseño a usar el móvil de forma segura para evitar estafas y mensajes engañosos.",
+        "Abajo detallo mi formación oficial universitaria en Educación e Integración Social.",
+        "Puedes pulsar los botones gigantes para escribirme por WhatsApp o llamarme directamente.",
+        "¡Estaré encantada de visitarte en tu domicilio en Alcalá de Henares y ayudarte paso a paso!"
       ];
-      const gestures = ['welcome', 'me', 'work', 'projects', 'contact', 'thanks'];
+      const gestures = ['welcome', 'me', 'work', 'projects', 'work', 'projects', 'work', 'me', 'contact', 'thanks'];
       let index = 0;
       setCurrentCaption(captions[0]);
       setCurrentGesture(gestures[0]);
@@ -44,8 +48,10 @@ export default function App() {
       captionInterval = setInterval(() => {
         index = (index + 1) % captions.length;
         setCurrentCaption(captions[index]);
-        setCurrentGesture(gestures[index]);
-      }, 4000);
+        // Safe mapping of gestures matching captions index
+        const gesturePattern = gestures[index] || 'idle';
+        setCurrentGesture(gesturePattern);
+      }, 4500);
     } else {
       setCurrentCaption('');
       setCurrentGesture('idle');
@@ -142,32 +148,38 @@ export default function App() {
   };
 
   const handleToggleAudio = () => {
+    console.log("TTS voice synthesis: Toggle requested. Current state:", isAudioPlaying);
     if (isAudioPlaying) {
+      console.log("TTS voice synthesis: Cancelling active playback");
       window.speechSynthesis.cancel();
       setIsAudioPlaying(false);
     } else {
+      console.log("TTS voice synthesis: Initializing utterance");
       const textToSpeak = "Hola, te doy la bienvenida. En esta página, María Carrillo, Educadora Social, te ofrece apoyo y clases a domicilio en Alcalá de Henares para aprender a usar el móvil, WhatsApp, pedir citas médicas y realizar tus gestiones de internet sin prisas y con total paciencia. Si deseas contactar con ella, pulsa el botón verde para enviar un WhatsApp o el botón naranja para llamarla directamente por teléfono. ¡Estaremos encantados de ayudarte!";
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      
+      // Forzar idioma en español (deja que el navegador use su voz predeterminada de forma segura)
       utterance.lang = 'es-ES';
-      
-      // Buscar una voz en español preferentemente alegre/femenina
-      const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(v => v.lang.startsWith('es') && v.name.toLowerCase().includes('google')) ||
-                             voices.find(v => v.lang.startsWith('es') && v.name.toLowerCase().includes('helena')) ||
-                             voices.find(v => v.lang.startsWith('es'));
-      if (preferredVoice) {
-        utterance.voice = preferredVoice;
-      }
-      
       utterance.rate = 0.9; // Un ritmo óptimo y natural
       utterance.pitch = 1.15; // Tono más alto para sonar más alegre y cercano
-      utterance.onend = () => setIsAudioPlaying(false);
-      utterance.onerror = () => setIsAudioPlaying(false);
+      
+      utterance.onstart = () => {
+        console.log("TTS voice synthesis: Audio playback started successfully");
+      };
+      utterance.onend = () => {
+        console.log("TTS voice synthesis: Audio playback finished");
+        setIsAudioPlaying(false);
+      };
+      utterance.onerror = (e) => {
+        console.error("TTS voice synthesis error occurred:", e);
+        setIsAudioPlaying(false);
+      };
       
       window.speechSynthesis.cancel();
       setTimeout(() => {
+        console.log("TTS voice synthesis: Triggering speechSynthesis.speak()");
         window.speechSynthesis.speak(utterance);
-      }, 100);
+      }, 150);
       setIsAudioPlaying(true);
     }
   };
