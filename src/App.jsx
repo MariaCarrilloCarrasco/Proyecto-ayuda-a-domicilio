@@ -9,6 +9,18 @@ export default function App() {
   // Image Viewer modal state
   const [zoomedImage, setZoomedImage] = useState(null);
   const [zoomLevel, setZoomLevel] = useState(1);
+  const utteranceRef = useRef(null);
+
+  const cancelSpeech = () => {
+    if (utteranceRef.current) {
+      utteranceRef.current.onstart = null;
+      utteranceRef.current.onend = null;
+      utteranceRef.current.onerror = null;
+      utteranceRef.current = null;
+    }
+    window.speechSynthesis.cancel();
+  };
+
   // Assistant states
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -22,7 +34,10 @@ export default function App() {
       setIsBlinking(true);
       setTimeout(() => setIsBlinking(false), 200);
     }, 4000);
-    return () => clearInterval(blinkInterval);
+    return () => {
+      clearInterval(blinkInterval);
+      cancelSpeech();
+    };
   }, []);
 
   useEffect(() => {
@@ -151,40 +166,51 @@ export default function App() {
     console.log("TTS toggle requested. isAudioPlaying:", isAudioPlaying);
     if (isAudioPlaying) {
       console.log("TTS: Cancelling active playback");
-      window.speechSynthesis.cancel();
+      cancelSpeech();
       setIsAudioPlaying(false);
     } else {
       console.log("TTS: Initializing utterance");
+      cancelSpeech();
+
       const textToSpeak = "Hola, te doy la bienvenida. En esta página, María Carrillo, Educadora Social, te ofrece apoyo y clases a domicilio en Alcalá de Henares para aprender a usar el móvil, WhatsApp, pedir citas médicas y realizar tus gestiones de internet sin prisas y con total paciencia. Si deseas contactar con ella, pulsa el botón verde para enviar un WhatsApp o el botón naranja para llamarla directamente por teléfono. ¡Estaremos encantados de ayudarte!";
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      utteranceRef.current = utterance; // Mantener referencia para evitar recolección de basura
+      
       utterance.lang = 'es-ES';
       
-      // Ritmo y tono estándar para evitar bloqueos del motor TTS
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
-      
-      utterance.onstart = () => {
-        console.log("TTS: Started speaking successfully");
-      };
-      utterance.onend = () => {
-        console.log("TTS: Finished speaking");
-        setIsAudioPlaying(false);
-      };
-      utterance.onerror = (e) => {
-        console.error("TTS: Error occurred:", e);
-        setIsAudioPlaying(false);
-      };
-      
-      window.speechSynthesis.cancel();
-      // Forzar reanudación por si el motor de síntesis de voz se quedó pausado/congelado
-      if (window.speechSynthesis.resume) {
-        window.speechSynthesis.resume();
+      // Buscar una voz en español preferentemente alegre/femenina
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(v => v.lang.startsWith('es') && v.name.toLowerCase().includes('google')) ||
+                             voices.find(v => v.lang.startsWith('es') && v.name.toLowerCase().includes('helena')) ||
+                             voices.find(v => v.lang.startsWith('es'));
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
       }
       
-      setTimeout(() => {
-        console.log("TTS: Triggering speak()");
-        window.speechSynthesis.speak(utterance);
-      }, 150);
+      utterance.rate = 0.95; // Un ritmo óptimo y natural
+      utterance.pitch = 1.15; // Tono alegre y cercano
+      
+      utterance.onstart = () => {
+        console.log("TTS: Audio playback started successfully");
+        setIsAudioPlaying(true);
+      };
+      utterance.onend = () => {
+        console.log("TTS: Audio playback finished");
+        setIsAudioPlaying(false);
+        utteranceRef.current = null;
+      };
+      utterance.onerror = (e) => {
+        if (e.error === 'interrupted' || e.error === 'canceled') {
+          console.log("TTS: Playback interrupted or canceled intentionally");
+          return;
+        }
+        console.error("TTS error occurred:", e.error, e);
+        setIsAudioPlaying(false);
+        utteranceRef.current = null;
+      };
+      
+      console.log("TTS: Triggering speak() synchronously");
+      window.speechSynthesis.speak(utterance);
       setIsAudioPlaying(true);
     }
   };
@@ -549,10 +575,8 @@ export default function App() {
               <span>🧏 Guía Accesible (Voz y Señas)</span>
               <button className="btn-close-assistant" onClick={() => {
                 setIsAssistantOpen(false);
-                if (isAudioPlaying) {
-                  window.speechSynthesis.cancel();
-                  setIsAudioPlaying(false);
-                }
+                cancelSpeech();
+                setIsAudioPlaying(false);
                 setIsSignPlaying(false);
               }}>✕</button>
             </div>
