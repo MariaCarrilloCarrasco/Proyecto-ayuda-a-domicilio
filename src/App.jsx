@@ -148,36 +148,41 @@ export default function App() {
   };
 
   const handleToggleAudio = () => {
-    console.log("TTS voice synthesis: Toggle requested. Current state:", isAudioPlaying);
+    console.log("TTS toggle requested. isAudioPlaying:", isAudioPlaying);
     if (isAudioPlaying) {
-      console.log("TTS voice synthesis: Cancelling active playback");
+      console.log("TTS: Cancelling active playback");
       window.speechSynthesis.cancel();
       setIsAudioPlaying(false);
     } else {
-      console.log("TTS voice synthesis: Initializing utterance");
+      console.log("TTS: Initializing utterance");
       const textToSpeak = "Hola, te doy la bienvenida. En esta página, María Carrillo, Educadora Social, te ofrece apoyo y clases a domicilio en Alcalá de Henares para aprender a usar el móvil, WhatsApp, pedir citas médicas y realizar tus gestiones de internet sin prisas y con total paciencia. Si deseas contactar con ella, pulsa el botón verde para enviar un WhatsApp o el botón naranja para llamarla directamente por teléfono. ¡Estaremos encantados de ayudarte!";
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
-      
-      // Forzar idioma en español (deja que el navegador use su voz predeterminada de forma segura)
       utterance.lang = 'es-ES';
-      utterance.rate = 0.9; // Un ritmo óptimo y natural
-      utterance.pitch = 1.15; // Tono más alto para sonar más alegre y cercano
+      
+      // Ritmo y tono estándar para evitar bloqueos del motor TTS
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
       
       utterance.onstart = () => {
-        console.log("TTS voice synthesis: Audio playback started successfully");
+        console.log("TTS: Started speaking successfully");
       };
       utterance.onend = () => {
-        console.log("TTS voice synthesis: Audio playback finished");
+        console.log("TTS: Finished speaking");
         setIsAudioPlaying(false);
       };
       utterance.onerror = (e) => {
-        console.error("TTS voice synthesis error occurred:", e);
+        console.error("TTS: Error occurred:", e);
         setIsAudioPlaying(false);
       };
       
       window.speechSynthesis.cancel();
+      // Forzar reanudación por si el motor de síntesis de voz se quedó pausado/congelado
+      if (window.speechSynthesis.resume) {
+        window.speechSynthesis.resume();
+      }
+      
       setTimeout(() => {
-        console.log("TTS voice synthesis: Triggering speechSynthesis.speak()");
+        console.log("TTS: Triggering speak()");
         window.speechSynthesis.speak(utterance);
       }, 150);
       setIsAudioPlaying(true);
