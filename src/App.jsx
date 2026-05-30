@@ -8,21 +8,49 @@ export default function App() {
   const [highContrast, setHighContrast] = useState(false);
   // Image Viewer modal state
   const [zoomedImage, setZoomedImage] = useState(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
   // Assistant states
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isSignPlaying, setIsSignPlaying] = useState(false);
-
-  const signVideoRef = useRef(null);
+  const [currentCaption, setCurrentCaption] = useState('');
+  const [currentGesture, setCurrentGesture] = useState('idle');
+  const [isBlinking, setIsBlinking] = useState(false);
 
   useEffect(() => {
-    if (signVideoRef.current) {
-      if (isSignPlaying) {
-        signVideoRef.current.play().catch(err => console.log("Sign video play error:", err));
-      } else {
-        signVideoRef.current.pause();
-      }
+    const blinkInterval = setInterval(() => {
+      setIsBlinking(true);
+      setTimeout(() => setIsBlinking(false), 200);
+    }, 4000);
+    return () => clearInterval(blinkInterval);
+  }, []);
+
+  useEffect(() => {
+    let captionInterval;
+    if (isSignPlaying) {
+      const captions = [
+        "¡Hola! Te doy la bienvenida a mi web.",
+        "Soy María Carrillo, Educadora Social.",
+        "Ofrezco clases a domicilio de móvil e internet.",
+        "Aprenderás a usar WhatsApp y pedir citas médicas.",
+        "También te ayudo con gestiones y trámites oficiales.",
+        "Si quieres clases, ¡contacta conmigo!"
+      ];
+      const gestures = ['welcome', 'me', 'work', 'projects', 'contact', 'thanks'];
+      let index = 0;
+      setCurrentCaption(captions[0]);
+      setCurrentGesture(gestures[0]);
+      
+      captionInterval = setInterval(() => {
+        index = (index + 1) % captions.length;
+        setCurrentCaption(captions[index]);
+        setCurrentGesture(gestures[index]);
+      }, 4000);
+    } else {
+      setCurrentCaption('');
+      setCurrentGesture('idle');
     }
+    return () => clearInterval(captionInterval);
   }, [isSignPlaying]);
 
   const workshops = [
@@ -121,12 +149,25 @@ export default function App() {
       const textToSpeak = "Hola, te doy la bienvenida. En esta página, María Carrillo, Educadora Social, te ofrece apoyo y clases a domicilio en Alcalá de Henares para aprender a usar el móvil, WhatsApp, pedir citas médicas y realizar tus gestiones de internet sin prisas y con total paciencia. Si deseas contactar con ella, pulsa el botón verde para enviar un WhatsApp o el botón naranja para llamarla directamente por teléfono. ¡Estaremos encantados de ayudarte!";
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
       utterance.lang = 'es-ES';
-      utterance.rate = 0.85; // Un poco más lento para mejor claridad
+      
+      // Buscar una voz en español preferentemente alegre/femenina
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(v => v.lang.startsWith('es') && v.name.toLowerCase().includes('google')) ||
+                             voices.find(v => v.lang.startsWith('es') && v.name.toLowerCase().includes('helena')) ||
+                             voices.find(v => v.lang.startsWith('es'));
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+      
+      utterance.rate = 0.9; // Un ritmo óptimo y natural
+      utterance.pitch = 1.15; // Tono más alto para sonar más alegre y cercano
       utterance.onend = () => setIsAudioPlaying(false);
       utterance.onerror = () => setIsAudioPlaying(false);
       
       window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utterance);
+      setTimeout(() => {
+        window.speechSynthesis.speak(utterance);
+      }, 100);
       setIsAudioPlaying(true);
     }
   };
@@ -385,7 +426,7 @@ export default function App() {
         <p className="section-subtitle">Haz clic en cualquier imagen para verla en grande y leerla con comodidad.</p>
         <div className="gallery-grid">
           {galleryImages.map((img, index) => (
-            <div key={index} className="gallery-card" onClick={() => setZoomedImage(img)}>
+            <div key={index} className="gallery-card" onClick={() => { setZoomedImage(img); setZoomLevel(1); }}>
               <div className="gallery-img-wrap">
                 <img src={img.src} alt={img.alt} className="gallery-img" />
                 <div className="gallery-overlay">
@@ -453,8 +494,31 @@ export default function App() {
       {zoomedImage && (
         <div className="zoom-overlay" onClick={() => setZoomedImage(null)}>
           <div className="zoom-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="btn-close-zoom" onClick={() => setZoomedImage(null)}>✕ Cerrar</button>
-            <img src={zoomedImage.src} alt={zoomedImage.alt} className="zoomed-img-large" />
+            <div className="zoom-controls">
+              <button className="btn-zoom-action" onClick={() => setZoomLevel(prev => Math.min(prev + 0.25, 3.5))} title="Acercar">
+                ➕ Acercar ({(zoomLevel * 100).toFixed(0)}%)
+              </button>
+              <button className="btn-zoom-action" onClick={() => setZoomLevel(prev => Math.max(prev - 0.25, 0.75))} title="Alejar">
+                ➖ Alejar
+              </button>
+              <button className="btn-zoom-action" onClick={() => setZoomLevel(1)} title="Restablecer tamaño">
+                🔄 Restablecer
+              </button>
+              <button className="btn-close-zoom" onClick={() => setZoomedImage(null)}>
+                ✕ Cerrar
+              </button>
+            </div>
+            <div className="zoomed-img-container">
+              <img 
+                src={zoomedImage.src} 
+                alt={zoomedImage.alt} 
+                className="zoomed-img-large" 
+                style={{ 
+                  width: `${100 * zoomLevel}%`,
+                  transition: 'width 0.2s ease'
+                }} 
+              />
+            </div>
             <p className="zoom-caption">{zoomedImage.alt}</p>
           </div>
         </div>
@@ -476,32 +540,101 @@ export default function App() {
               }}>✕</button>
             </div>
             
-            <div className="assistant-body">
-              {/* Sign Language Video */}
+             <div className="assistant-body">
+              {/* Sign Language Live Webcam Feed simulation */}
               <div className="sign-player-container">
                 <div className={`sign-video-screen ${isSignPlaying ? 'playing' : 'paused'}`}>
-                  <video
-                    ref={signVideoRef}
-                    className="sign-video-element"
-                    src="/sign-language.mp4"
-                    loop
-                    muted
-                    playsInline
-                    onClick={() => setIsSignPlaying(!isSignPlaying)}
-                    style={{ cursor: 'pointer' }}
-                  />
-                  {!isSignPlaying && (
-                    <div className="play-overlay" onClick={() => setIsSignPlaying(true)}>
-                      <span className="play-icon-sig">▶️ Ver Lengua de Signos</span>
+                  {/* Custom Animated Avatar Interpreter */}
+                  <svg viewBox="0 0 100 100" className={`interpreter-svg gesture-${currentGesture}`}>
+                    {/* Background */}
+                    <rect width="100" height="100" fill="#2C0E37" rx="12" />
+                    
+                    {/* Subtle webcam lines */}
+                    <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.02)" strokeWidth="0.5" />
+                    <line x1="50" y1="0" x2="50" y2="100" stroke="rgba(255,255,255,0.02)" strokeWidth="0.5" />
+                    
+                    {/* Character Torso */}
+                    <path d="M 20 95 C 20 65, 80 65, 80 95 Z" fill="#E85D04" className="interpreter-torso" />
+                    
+                    {/* Head */}
+                    <circle cx="50" cy="40" r="16" fill="#ffd1b3" />
+                    
+                    {/* Hair */}
+                    <path d="M 32 40 C 30 22, 70 22, 68 40 C 65 26, 35 26, 32 40 Z" fill="#4B125C" />
+                    <path d="M 32 36 L 30 52 C 30 55, 34 55, 34 52 Z" fill="#4B125C" />
+                    <path d="M 68 36 L 70 52 C 70 55, 66 55, 66 52 Z" fill="#4B125C" />
+                    
+                    {/* Eyes */}
+                    {isBlinking ? (
+                      <>
+                        <line x1="43" y1="38" x2="47" y2="38" stroke="#2C0E37" strokeWidth="2.5" strokeLinecap="round" />
+                        <line x1="53" y1="38" x2="57" y2="38" stroke="#2C0E37" strokeWidth="2.5" strokeLinecap="round" />
+                      </>
+                    ) : (
+                      <>
+                        <circle cx="45" cy="38" r="2.5" fill="#2C0E37" />
+                        <circle cx="55" cy="38" r="2.5" fill="#2C0E37" />
+                        <path d="M 42 33 Q 45 32 48 34" stroke="#2C0E37" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                        <path d="M 58 33 Q 55 32 52 34" stroke="#2C0E37" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                      </>
+                    )}
+                    
+                    {/* Nose */}
+                    <path d="M 50 38 Q 48 41 50 42" stroke="rgba(44,14,55,0.3)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                    
+                    {/* Mouth */}
+                    <path 
+                      d="M 45 46 Q 50 49 55 46" 
+                      stroke="#c1121f" 
+                      strokeWidth="2" 
+                      fill="none" 
+                      strokeLinecap="round" 
+                      className={`interpreter-mouth ${isSignPlaying ? 'talking' : ''}`}
+                    />
+                    
+                    {/* Left Arm */}
+                    <path 
+                      d="M 25 70 Q 18 52 35 50" 
+                      stroke="#ffd1b3" 
+                      strokeWidth="6" 
+                      strokeLinecap="round" 
+                      fill="none" 
+                      className="interpreter-arm left-arm" 
+                    />
+                    
+                    {/* Right Arm */}
+                    <path 
+                      d="M 75 70 Q 82 52 65 50" 
+                      stroke="#ffd1b3" 
+                      strokeWidth="6" 
+                      strokeLinecap="round" 
+                      fill="none" 
+                      className="interpreter-arm right-arm" 
+                    />
+                  </svg>
+                  
+                  {isSignPlaying && (
+                    <div className="webcam-live-indicator">
+                      <span className="live-dot"></span>
+                      <span>LSE EN VIVO</span>
                     </div>
                   )}
-                  {isSignPlaying && (
-                    <span className="sign-language-badge">Intérprete</span>
+                  
+                  {isSignPlaying && currentCaption && (
+                    <div className="sign-captions-overlay">
+                      {currentCaption}
+                    </div>
+                  )}
+
+                  {!isSignPlaying && (
+                    <div className="play-overlay" onClick={() => setIsSignPlaying(true)}>
+                      <span className="play-icon-sig">▶️ Ver Intérprete LSE</span>
+                    </div>
                   )}
                 </div>
                 <div className="player-controls">
                   <button className="btn-player" onClick={() => setIsSignPlaying(!isSignPlaying)}>
-                    {isSignPlaying ? '⏸️ Pausar Intérprete' : '▶️ Ver en Lengua de Signos'}
+                    {isSignPlaying ? '⏸️ Pausar Intérprete' : '▶️ Ver Intérprete LSE'}
                   </button>
                 </div>
               </div>
