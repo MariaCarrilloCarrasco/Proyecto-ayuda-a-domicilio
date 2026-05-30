@@ -7,7 +7,7 @@ Este es el proyecto personal desarrollado por **María Carrillo Carrasco** para 
 El sitio web sirve como un puente digital seguro y de alta confianza. Permite a los usuarios de la tercera edad:
 1. **Acceder a Ayuda Rápida**: Botones de gran formato y contraste para iniciar conversaciones de WhatsApp o realizar llamadas.
 2. **Consultar Servicios y Talleres**: Explicación clara de clases particulares a domicilio (Salud, WhatsApp, trámites de ayuntamiento, seguridad).
-3. **Explorar Folletos y Acreditaciones**: Galería de imágenes interactivas con visor integrado para inspeccionar folletos informativos, tarjetas de contacto y fotos del taller.
+3. **Explorar Folletos con Zoom Interactivo**: Galería de imágenes con visor modal a pantalla completa. Incluye controles de acercamiento (**Zoom In** hasta 3.5x), alejamiento (**Zoom Out**) y restablecimiento de escala, junto con barras de desplazamiento para inspeccionar los folletos con comodidad.
 4. **Ver Perfil y Confianza**: Presentación de María Carrillo como Educadora Social e Integradora Social con experiencia relevante en talleres comunitarios de la Fundación "la Caixa".
 
 ---
@@ -29,6 +29,9 @@ La aplicación se construyó bajo un enfoque de **Desarrollo Web Accesible (Incl
 El diseño está pensado especialmente para mitigar las dificultades visuales o motrices de los adultos mayores:
 - **Redimensionamiento Tipográfico Dinámico**: Botones flotantes permanentes en cabecera para cambiar el tamaño de letra entre Mediana (`A`), Grande (`A+`) y Muy Grande (`A++`) escalando toda la interfaz de forma armónica.
 - **Tema de Alto Contraste**: Botón para activar un tema blanco/negro puro con bordes marcados de 2px, asegurando un contraste superior a 7:1 en todos los textos y áreas activas.
+- **Guía Accesible Flotante**:
+  - **Intérprete en Lengua de Signos**: Un avatar animado en formato vectorial (SVG) que gesticula de forma dinámica coordinado con subtítulos (LSE).
+  - **Lector por Voz**: Un motor de locución de alta compatibilidad que reproduce sincrónicamente la descripción de la página sin bloqueos de reproducción y con limpieza activa de eventos asíncronos residuales.
 - **Tamaño de Botones**: Botones de llamada y WhatsApp de gran tamaño (mínimo de `60px` de altura táctil) para facilitar el clic a personas con temblores o baja precisión motriz.
 - **Navegación Intuitiva**: Ausencia de menús desplegables complejos o lenguaje técnico.
 
