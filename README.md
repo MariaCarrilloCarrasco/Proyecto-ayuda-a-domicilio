@@ -1,59 +1,77 @@
-# Proyecto Personal de Acompañamiento Digital a Personas Mayores 🤝
+# Acompañamiento Digital y Atención a Domicilio para Personas Mayores 🤝
+### *Proyecto Personal de Impacto Social — María Carrillo Carrasco (Factoría F5)*
 
-Este es el proyecto personal desarrollado por **María Carrillo Carrasco** para la **Factoría F5**. Es una aplicación web diseñada específicamente para que las personas mayores (tercera edad) puedan conocer el proyecto de acompañamiento a domicilio, consultar talleres y contactar de forma directa y simplificada mediante llamadas telefónicas o mensajes directos de WhatsApp.
+Este es el proyecto personal desarrollado por **María Carrillo Carrasco**, Educadora Social y Desarrolladora Frontend. Consiste en una plataforma web totalmente accesible orientada a dar a conocer servicios de clases y apoyo digital a domicilio para personas mayores en la zona de **Alcalá de Henares**. 
 
-## 📋 Descripción del Proyecto
+El sitio está diseñado con altos estándares de usabilidad e inclusión digital, asegurando que personas de la tercera edad con dificultades de visión, oído o motricidad fina puedan navegar y comunicarse de manera sumamente sencilla.
 
-El sitio web sirve como un puente digital seguro y de alta confianza. Permite a los usuarios de la tercera edad:
-1. **Acceder a Ayuda Rápida**: Botones de gran formato y contraste para iniciar conversaciones de WhatsApp o realizar llamadas.
-2. **Consultar Servicios y Talleres**: Explicación clara de clases particulares a domicilio (Salud, WhatsApp, trámites de ayuntamiento, seguridad).
-3. **Explorar Folletos con Zoom Interactivo**: Galería de imágenes con visor modal a pantalla completa. Incluye controles de acercamiento (**Zoom In** hasta 3.5x), alejamiento (**Zoom Out**) y restablecimiento de escala, junto con barras de desplazamiento para inspeccionar los folletos con comodidad.
-4. **Ver Perfil y Confianza**: Presentación de María Carrillo como Educadora Social e Integradora Social con experiencia relevante en talleres comunitarios de la Fundación "la Caixa".
+---
+
+## 📋 ¿En qué consiste el Servicio?
+
+El servicio ofrece **clases particulares e individuales a domicilio** enfocadas en romper la brecha digital en personas mayores. Las actividades principales se agrupan en cuatro áreas:
+
+1. **WhatsApp y Videollamadas**: Aprender a guardar contactos, enviar mensajes de voz y hacer videollamadas con hijos, nietos y seres queridos.
+2. **Salud y Citas Médicas**: Configuración y aprendizaje de la app de salud pública para solicitar citas de cabecera, recetas electrónicas y consultar el historial médico.
+3. **Gestiones por Internet**: Realización paso a paso y de manera segura de trámites de banco online, citas en la Seguridad Social, Ayuntamiento o renovación del DNI.
+4. **Manejo del Móvil y Seguridad Digital**: Configuración personalizada del dispositivo (letras grandes, tonos legibles) y educación práctica para detectar fraudes, mensajes engañosos y evitar timos en internet.
+
+---
+
+## ⭐ Aspectos Clave de mi Servicio
+
+* **Paciencia y Adaptación**: Clases adaptadas al ritmo del alumno, repitiendo las explicaciones tantas veces como sea necesario, sin prisas.
+* **Seguridad y Confianza**: Acompañamiento profesional en el propio domicilio del alumno para su comodidad.
+* **Enfoque Práctico**: Aprendizaje basado en tareas del día a día (usar el móvil para lo que realmente necesitan).
+* **Comunicación Directa**: Facilidades de contacto instantáneo mediante botones visibles a un clic.
+
+---
+
+## 🎓 Formación Académica (Acreditaciones)
+
+El servicio está respaldado por una formación universitaria sólida en el ámbito social y tecnológico:
+* **Grado Universitario en Educación Social** — *Universidad de Alcalá (UAH)*.
+* **Técnico Superior en Integración Social** — *CES Cardenal Cisneros*.
+* **Desarrollo Frontend & Accesibilidad** — *Femcoders / Factoría F5*.
+* **Curso Oficial de Orientación Laboral e Inserción para Personas con Discapacidad**.
+
+---
+
+## 💼 Experiencia Profesional
+
+Amplia trayectoria en dinamización, estimulación cognitiva y apoyo técnico para personas en situación de vulnerabilidad y personas mayores:
+1. **Técnica de Talleres y Actividades para Mayores (2022 - 2024)**: Dirección de dinámicas cognitivas y uso de tecnologías en Centros de Mayores de Coslada y Alcalá de Henares (Obra Social "la Caixa" / Arcinature).
+2. **Técnica de Educación Social e Integración (2021 - 2024)**: Apoyo socioeducativo y mediación con familias en situación de vulnerabilidad y menores con necesidades especiales (Centro Municipal de Barajas y Asociación CAJE).
+3. **Técnica de Inserción y Orientación Laboral (2021)**: Formación y desarrollo de competencias digitales básicas para mejorar la empleabilidad en personas con discapacidad (*Fundación Capacis*).
+4. **Integración Social e Igualdad (2018)**: Primera acogida y orientación de recursos para mujeres en riesgo de exclusión social (Centro Asesor de la Mujer, Ayuntamiento de Alcalá de Henares).
+
+---
+
+## ♿ Características Generales de la Página Web
+
+La web ha sido diseñada desde cero para garantizar una accesibilidad avanzada conforme a las pautas WCAG (AA/AAA):
+
+### 1. Panel de Accesibilidad Dinámico
+* **Escala de Texto (A / A+ / A++)**: Botones táctiles de gran formato que aumentan el tamaño de letra de toda la página para facilitar la lectura.
+* **Modo de Alto Contraste**: Botón que alterna el diseño a blanco y negro de alto contraste con bordes remarcados para personas con visión reducida.
+
+### 2. Guía Flotante Interactiva
+* **Intérprete LSE (Señas)**: Un avatar vectorizado animado que muestra gestos coordinados con subtítulos integrados para personas sordas.
+* **Lector de Voz (TTS)**: Un motor de voz por software que narra el contenido de la web con un tono alegre y ritmo cercano, optimizado para que no se bloquee ni se detenga en navegadores modernos.
+
+### 3. Visor de Folletos con Zoom
+* Galería interactiva para ampliar folletos de información y tarjetas de visita.
+* Cuenta con controles rápidos de **Zoom In** (ampliación de hasta 3.5x), **Zoom Out** (reducción) y **Reset** (restablecer tamaño), junto con barras de desplazamiento automático para explorar la imagen cómodamente.
+
+### 4. Botones de Acción Gigantes
+* Botones de mínimo `60px` de altura para llamar directamente por teléfono o enviar un mensaje pre-redactado de WhatsApp, reduciendo las barreras motrices.
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
-La aplicación se construyó bajo un enfoque de **Desarrollo Web Accesible (Inclusión Digital)** y cuenta con las siguientes tecnologías:
-
-1. **React.js**: Para la modularización y estructuración interactiva de las tarjetas, botones y visor de imágenes (modal).
-2. **Vite**: Como entorno de desarrollo ágil y compilador optimizado de producción.
-3. **JavaScript (ES6+)**: Lógica de gestión de estados en accesibilidad (redimensionamiento de texto y contraste dinámico).
-4. **CSS3 (Vanilla)**: Maquetación fluida y responsiva utilizando CSS Variables para la escala tipográfica, sombras suaves para mejorar la profundidad visual y bordes redondeados.
-5. **Google Fonts (Outfit & Space Grotesk)**: Tipografía sans-serif de alta legibilidad, espaciado generoso y jerarquía clara.
-
----
-
-## ♿ Características de Accesibilidad (WCAG AA/AAA)
-
-El diseño está pensado especialmente para mitigar las dificultades visuales o motrices de los adultos mayores:
-- **Redimensionamiento Tipográfico Dinámico**: Botones flotantes permanentes en cabecera para cambiar el tamaño de letra entre Mediana (`A`), Grande (`A+`) y Muy Grande (`A++`) escalando toda la interfaz de forma armónica.
-- **Tema de Alto Contraste**: Botón para activar un tema blanco/negro puro con bordes marcados de 2px, asegurando un contraste superior a 7:1 en todos los textos y áreas activas.
-- **Guía Accesible Flotante**:
-  - **Intérprete en Lengua de Signos**: Un avatar animado en formato vectorial (SVG) que gesticula de forma dinámica coordinado con subtítulos (LSE).
-  - **Lector por Voz**: Un motor de locución de alta compatibilidad que reproduce sincrónicamente la descripción de la página sin bloqueos de reproducción y con limpieza activa de eventos asíncronos residuales.
-- **Tamaño de Botones**: Botones de llamada y WhatsApp de gran tamaño (mínimo de `60px` de altura táctil) para facilitar el clic a personas con temblores o baja precisión motriz.
-- **Navegación Intuitiva**: Ausencia de menús desplegables complejos o lenguaje técnico.
-
----
-
-## 🚀 Cómo Iniciar el Proyecto Localmente
-
-Para descargar y ejecutar el proyecto en tu entorno local:
-
-1. **Instalar Dependencias**:
-   ```bash
-   npm install
-   ```
-
-2. **Iniciar Servidor de Desarrollo**:
-   ```bash
-   npm run dev
-   ```
-   *Abre la dirección [http://localhost:5173](http://localhost:5173) en tu navegador.*
-
-3. **Compilar para Producción**:
-   ```bash
-   npm run build
-   ```
-   *Genera los archivos optimizados dentro de la carpeta `/dist` listos para desplegar.*
+* **React.js (v18+)**: Modularización de componentes interactivos y control de estados (zoom, lector, animaciones, contraste).
+* **Vite**: Servidor de desarrollo súper rápido y compilador optimizado.
+* **HTML5 & CSS3**: Maquetación adaptativa (Responsive) con CSS Custom Properties para la paleta de colores crema cálida (`#FAF7F0`) y morada profunda.
+* **Web Speech API**: Síntesis de voz integrada para la lectura del contenido.
+* **SVG Vectorial**: Para las ilustraciones del avatar y las animaciones de pestañeo.
