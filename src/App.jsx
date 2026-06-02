@@ -305,26 +305,6 @@ export default function App() {
           </div>
         </div>
       </section>
-
-      {/* VIDEO PRESENTATION SECTION */}
-      <section className="section video-section">
-        <div className="video-section-container">
-          <h3 className="section-title">Vídeo de Presentación</h3>
-          <p className="video-section-subtitle">
-            Descubre en este breve vídeo cómo ayudo a las personas mayores a familiarizarse con el uso del móvil y realizar sus trámites paso a paso.
-          </p>
-          <div className="video-wrapper">
-            <video 
-              src="/video-presentacion.mp4" 
-              className="presentation-video-element" 
-              controls 
-              preload="metadata"
-              poster="/personal-project-1.jpg"
-            />
-          </div>
-        </div>
-      </section>
-
       {/* TALLERES & SERVICIOS */}
       <section className="section workshops-section">
         <h3 className="section-title">¿En qué te puedo ayudar?</h3>
